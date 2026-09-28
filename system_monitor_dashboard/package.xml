@@ -3,7 +3,7 @@
   <name>system_monitor_dashboard</name>
   <version>0.1.0</version>
   <description>System status publisher and PyQt5 dashboard for ROS 2 Humble.</description>
-  <maintainer email="maintainer@localhost">System Monitor Maintainers</maintainer>
+  <maintainer email="LCY123229@users.noreply.github.com">System Monitor Maintainers</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_python</buildtool_depend>

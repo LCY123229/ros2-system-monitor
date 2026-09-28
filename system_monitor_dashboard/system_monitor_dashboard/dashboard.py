@@ -1,5 +1,6 @@
 """Display ROS 2 system status messages in a compact Qt window."""
 
+import signal
 import sys
 import time
 from datetime import datetime
@@ -77,15 +78,37 @@ def main(args=None):
     window = StatusWindow()
     node = StatusSubscriber(window)
     timer = QTimer()
-    timer.timeout.connect(lambda: (rclpy.spin_once(node, timeout_sec=0), window.update_connection()))
+
+    def poll_status():
+        if not rclpy.ok():
+            timer.stop()
+            app.quit()
+            return
+        rclpy.spin_once(node, timeout_sec=0)
+        window.update_connection()
+
+    def request_shutdown(_signum, _frame):
+        timer.stop()
+        app.quit()
+
+    previous_handlers = {
+        sig: signal.getsignal(sig) for sig in (signal.SIGINT, signal.SIGTERM)
+    }
+    for sig in previous_handlers:
+        signal.signal(sig, request_shutdown)
+
+    timer.timeout.connect(poll_status)
     timer.start(100)
     window.show()
     try:
         return app.exec_()
     finally:
         timer.stop()
+        for sig, previous_handler in previous_handlers.items():
+            signal.signal(sig, previous_handler)
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':

@@ -25,7 +25,7 @@
 
 ```bash
 sudo apt update
-sudo apt install python3-psutil python3-pyqt5 python3-colcon-common-extensions
+sudo apt install build-essential fonts-noto-cjk python3-psutil python3-pyqt5 python3-colcon-common-extensions
 mkdir -p ~/ros2_ws/src
 cd ~/ros2_ws/src
 git clone https://github.com/LCY123229/ros2-system-monitor.git
@@ -63,4 +63,4 @@ ros2 run system_monitor_dashboard status_dashboard
 2. 发布节点启动后，`ros2 topic hz /system_status` 约为 1 Hz。
 3. 窗口显示时间、主机名、CPU、内存和网络收发量；停止发布节点 3 秒后窗口显示“连接中断”。
 
-本项目使用 Apache-2.0 许可。发布 GitHub 前，可按需要更新两个 `package.xml` 中的维护者信息。
+本项目使用 Apache-2.0 许可。
